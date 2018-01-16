@@ -1,4 +1,7 @@
 <?php
+// Start a session
+session_start();
+
 // Require the autoload file
 require_once('vendor/autoload.php');
 
@@ -53,9 +56,18 @@ $f3->route('GET /hi/@first/@last', function($f3, $params) {
     $f3->set('last', $params['last']);
     $f3->set('message', 'Hi');
 
+    $_SESSION['first']= $f3->get('first');
+    $_SESSION['last']= $f3->get('last');
+
     $template = new Template();
     echo $template->render('views/hi.html');
 
+});
+
+// remember that page was visited...
+
+$f3->route('GET /hi-again', function($f3, $params) {
+    echo '<p>Hello again, '.$_SESSION['first'].'</p>';
 });
 
 $f3->route('GET /language/@lang', function($f3, $params) {
